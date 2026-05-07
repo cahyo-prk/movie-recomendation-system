@@ -21,8 +21,8 @@ The recommendation system has two main objectives:
 
 ---
 ## Result Preview
+Global Recommendation:
 ```
-This project is a Movie Recommendation System built using:
 {
   "k": 3,
   "items": [
