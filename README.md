@@ -53,11 +53,41 @@ Global Recommendation:
   ]
 }
 ```
-The system provides:
+Personalized Recommendation:
 
-1. Global Popular Recommendations
-2. Personalized Recommendations
-3. Cold-Start Fallback Handling
+```
+{
+  "user_id": "u1",
+  "k": 3,
+  "fallback_used": false,
+  "items": [
+    {
+      "item_id": "i151",
+      "recommendation_score": 1,
+      "title": "Hotel Transylvania Part 3",
+      "content_type": "movie",
+      "genre": "family",
+      "reason": "Recommended based on similar user watch patterns"
+    },
+    {
+      "item_id": "i43",
+      "recommendation_score": 0.9466,
+      "title": "Shinchan",
+      "content_type": "tv",
+      "genre": "kids",
+      "reason": "Recommended based on similar user watch patterns"
+    },
+    {
+      "item_id": "i90",
+      "recommendation_score": 0.8439,
+      "title": "Tenet Part 2",
+      "content_type": "movie",
+      "genre": "thriller",
+      "reason": "Recommended based on similar user watch patterns"
+    }
+  ]
+}
+```
 
 ---
 # Dataset
