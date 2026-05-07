@@ -377,10 +377,13 @@ Recent interactions should influence recommendations more strongly.
 
 ### Example
 
-| Interaction | Weight |
-| ----------- | ------ |
-| yesterday   | 1      |
-| 90 days ago | 0.6    |
+| Interaction Age       | Calculation   | Recency Weight |
+| --------------------- | ------------- | -------------- |
+| yesterday (1 day ago) | exp(-1 / 30)  | 0.967          |
+| 7 days ago            | exp(-7 / 30)  | 0.792          |
+| 30 days ago           | exp(-30 / 30) | 0.368          |
+| 60 days ago           | exp(-60 / 30) | 0.135          |
+| 90 days ago           | exp(-90 / 30) | 0.050          |
 
 ---
 
