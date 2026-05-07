@@ -8,7 +8,18 @@ This project is a Movie Recommendation System built using:
 * Popularity-Based Recommendation
 * Implicit Feedback Modeling
 * FastAPI
+---
 
+# Project Objectives
+
+The recommendation system has two main objectives:
+
+| Objective                   | Description                              |
+| --------------------------- | ---------------------------------------- |
+| Global Recommendation       | Recommend globally trending content      |
+| Personalized Recommendation | Recommend content based on user behavior |
+
+---
 ## Result Preview
 
 This project is a Movie Recommendation System built using:
@@ -26,18 +37,6 @@ The system provides:
 3. Cold-Start Fallback Handling
 
 ---
-
-# Project Objectives
-
-The recommendation system has two main objectives:
-
-| Objective                   | Description                              |
-| --------------------------- | ---------------------------------------- |
-| Global Recommendation       | Recommend globally trending content      |
-| Personalized Recommendation | Recommend content based on user behavior |
-
----
-
 # Dataset
 
 The project uses 3 CSV files.
