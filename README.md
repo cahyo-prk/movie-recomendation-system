@@ -212,16 +212,12 @@ movie-recommendation-system/
 
 # 1. data_loader.py
 
-## Purpose
-
 Responsible for:
 * loading CSV files
 * validating schema
 * preventing missing columns
 
----
-
-## Key Logic
+**Key Logic**
 ```python
 REQUIRED_EVENTS_COLUMNS = [
     "user_id",
@@ -233,8 +229,6 @@ REQUIRED_EVENTS_COLUMNS = [
 ```
 
 The system validates required columns before processing data.
-
----
 
 ### Why Validation Is Important
 
@@ -456,9 +450,7 @@ This content has very little influence on future recommendations.
 
 # 3. collaborative_recommender.py
 
-## Purpose
-
-Main engine for personalized recommendation
+Purpose: Main engine for personalized recommendation
 
 ---
 
@@ -641,9 +633,7 @@ To make recommendation scores:
 
 #4. popular_recommender.py
 
-## Purpose
-
-Responsible for: global popular recommendations
+Purpose: Responsible for global popular recommendations
 
 ---
 
