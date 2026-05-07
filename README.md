@@ -631,7 +631,7 @@ To make recommendation scores:
 
 ---
 
-#4. popular_recommender.py
+# 4. popular_recommender.py
 
 Purpose: Responsible for global popular recommendations
 
