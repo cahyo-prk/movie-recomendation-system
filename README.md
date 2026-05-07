@@ -633,30 +633,43 @@ To make recommendation scores:
 
 # 4. popular_recommender.py
 
-Purpose: Responsible for global popular recommendations
+**Responsible for global popular recommendations**
+
+This recommender generates trending content recommendations based on overall user engagement across the platform.
+
+It does not depend on a specific user.
 
 ---
 
-### Why Popular(Global) Recommendation Is Needed
+### Why Popular (Global) Recommendation Is Needed
 
-Collaborative filtering cannot personalize:
+Collaborative filtering cannot personalize recommendations for:
 
 * new users
-* users without history
+* users without interaction history
 
-This is called cold-start problem
+This is called:
+
+# cold-start problem
+
+So the system uses globally popular content as fallback recommendations.
 
 ---
 
-# Popularity Formula
+### Popularity Formula
 
-```Popularity = 0.7 × TotalInteractionScore + 0.3 × UniqueUserCount```
+```text id="pnj4h4"
+Popularity =
+0.7 × TotalInteractionScore
++
+0.3 × UniqueUserCount
+```
 
 ---
 
 ### Why Combine Two Signals?
 
-Because the system should consider:
+Because the system should consider both:
 
 | Signal            | Meaning              |
 | ----------------- | -------------------- |
@@ -665,63 +678,28 @@ Because the system should consider:
 
 ---
 
-### Example
+## Example
 
-| Movie        | Interaction | Users |
-| ------------ | ----------- | ----- |
-| Naruto       | high        | many  |
-| Random Movie | high        | 1     |
+| Movie        | Interaction Score | Users |
+| ------------ | ----------------- | ----- |
+| Naruto       | 160               | 14    |
+| Random Movie | 150               | 1     |
 
-Naruto becomes more globally popular.
+### Naruto Calculation
 
----
+```text id="swhtrj"
+Popularity =
+0.7(160) + 0.3(14)
 
-# 5. recommendation_service.py
+= 112 + 4.2
 
-### Purpose
-
-Acts as orchestration layer
-
----
-
-### Responsibilities
-
-* initialize recommenders
-* centralize business logic
-* handle fallback logic
-* prepare API-ready outputs
-
----
-
-### Why Service Layer Is Important
-
-Keeps:
-
-* API clean
-* recommendation logic reusable
-* architecture modular
-
----
-
-### Fallback Logic
-
-```python
-if (
-    recommendations is None or
-    recommendations.empty
-):
+= 116.2
 ```
 
----
+### Meaning
 
-### Why?
+Naruto becomes more globally popular because:
 
-Some users may:
-
-* not exist
-* have too few interactions
-* generate no recommendations
-
-The system then falls back to: popular(global) recommendations
-
----
+* many users interacted with it
+* engagement quality is high
+* users consistently watched and engaged with the content
