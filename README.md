@@ -171,7 +171,6 @@ Combining:
 # Why Collaborative Filtering?
 
 Collaborative filtering is used because:
-
 * recommendation is based on user behavior
 * users with similar viewing patterns tend to like similar content
 * suitable for implicit feedback datasets
@@ -182,7 +181,6 @@ Collaborative filtering is used because:
 # Why Popular Recommendation?
 
 Popularity recommendation is used for:
-
 * cold-start users
 * fallback recommendations
 * globally trending content
@@ -210,29 +208,6 @@ movie-recommendation-system/
 ├── main.py
 └── requirements.txt
 ```
-
----
-
-# End-to-End System Flow
-
-```text
-CSV Data
-   ↓
-Data Loading
-   ↓
-Interaction Processing
-   ↓
-User-Item Matrix
-   ↓
-Collaborative Filtering
-   ↓
-Recommendation Ranking
-   ↓
-Fallback Handling
-   ↓
-FastAPI Response
-```
-
 ---
 
 # 1. data_loader.py
@@ -240,7 +215,6 @@ FastAPI Response
 ## Purpose
 
 Responsible for:
-
 * loading CSV files
 * validating schema
 * preventing missing columns
@@ -248,7 +222,6 @@ Responsible for:
 ---
 
 ## Key Logic
-
 ```python
 REQUIRED_EVENTS_COLUMNS = [
     "user_id",
@@ -263,7 +236,7 @@ The system validates required columns before processing data.
 
 ---
 
-## Why Validation Is Important
+### Why Validation Is Important
 
 Recommendation systems depend heavily on:
 
@@ -282,15 +255,11 @@ Without validation:
 
 ## Purpose
 
-Transforms raw user interaction into:
-
-# interaction_score
-
-This is the most important feature in the recommendation system.
+Transforms raw user interaction into interaction_score. This is the most important feature in the recommendation system.
 
 ---
 
-# Why Interaction Engineering Is Needed
+### Why Interaction Engineering Is Needed
 
 Raw interaction data cannot be used directly because:
 
@@ -335,7 +304,7 @@ EVENT_WEIGHTS = {
 
 The system calculates:
 
-interaction_score = EventWeight × log(1 + watch_seconds) × RecencyWeight
+```interaction_score = EventWeight × log(1 + watch_seconds) × RecencyWeight```
 
 ---
 
@@ -343,9 +312,7 @@ interaction_score = EventWeight × log(1 + watch_seconds) × RecencyWeight
 
 ## A. Event Weight
 
-Represents:
-
-# user intent strength
+Represents: user intent strength
 
 Example:
 
@@ -363,13 +330,11 @@ Meaning:
 
 ## B. log(1 + watch_seconds)
 
-Used for:
-
-# watch duration normalization
+Used for: watch duration normalization
 
 ---
 
-# Why Log Scaling?
+### Why Log Scaling?
 
 Raw watch duration may contain extreme values.
 
@@ -386,7 +351,7 @@ Without scaling:
 
 ---
 
-# Example Transformation
+### Example Transformation
 
 | watch_seconds | log value |
 | ------------- | --------- |
@@ -400,25 +365,17 @@ The values become smoother and more stable.
 
 ## C. Recency Weight
 
-The system also applies:
-
-# recency decay
+The system also applies recency decay
 
 Formula:
 
-RecencyWeight = exp(-days_ago / 30)
+```RecencyWeight = exp(-days_ago / 30)```
 
----
-
-# Why Recency Weight?
-
+#### Why Recency Weight?
 Because user preferences change over time.
-
 Recent interactions should influence recommendations more strongly.
 
----
-
-# Example
+### Example
 
 | Interaction | Weight |
 | ----------- | ------ |
@@ -440,13 +397,11 @@ Recent interactions should influence recommendations more strongly.
 
 ## Purpose
 
-Main engine for:
-
-# personalized recommendation
+Main engine for personalized recommendation
 
 ---
 
-# Step 1 — Filter Weak Interactions
+### Step 1 — Filter Weak Interactions
 
 ```python
 interactions_df = interactions_df[
@@ -456,7 +411,7 @@ interactions_df = interactions_df[
 
 ---
 
-# Why?
+### Why?
 
 Removes:
 
@@ -468,7 +423,7 @@ This improves recommendation quality.
 
 ---
 
-# Step 2 — Build User-Item Matrix
+### Step 2 — Build User-Item Matrix
 
 ```python
 pivot_table(
@@ -480,7 +435,7 @@ pivot_table(
 
 ---
 
-# Result Example
+### Result Example
 
 | user | Naruto | Frozen | Interstellar |
 | ---- | ------ | ------ | ------------ |
@@ -489,7 +444,7 @@ pivot_table(
 
 ---
 
-# Matrix Meaning
+#### Matrix Meaning
 
 | Component | Meaning              |
 | --------- | -------------------- |
@@ -499,15 +454,13 @@ pivot_table(
 
 ---
 
-# Why This Matrix Is Important
+### Why This Matrix Is Important
 
-Collaborative filtering learns from:
-
-# user behavioral patterns
+Collaborative filtering learns from user behavioral patterns
 
 ---
 
-# Step 3 — Cosine Similarity
+### Step 3 — Cosine Similarity
 
 ```python
 cosine_similarity(
@@ -517,23 +470,17 @@ cosine_similarity(
 
 ---
 
-# Why .T (Transpose)?
+### Why .T (Transpose)?
 
-The original matrix is:
+The original matrix is user-item
 
-# user-item
+But collaborative filtering compares item-item similarity
 
-But collaborative filtering compares:
-
-# item-item similarity
-
-So the matrix is transposed into:
-
-# item-user
+So the matrix is transposed into item-user
 
 ---
 
-# Why Cosine Similarity?
+### Why Cosine Similarity?
 
 Because:
 
@@ -544,7 +491,7 @@ Because:
 
 ---
 
-# Example
+### Example
 
 If many users watch:
 
@@ -554,11 +501,11 @@ If many users watch:
 together,
 then:
 
-# similarity becomes high
+### similarity becomes high
 
 ---
 
-# Step 4 — Recommendation Scoring
+### Step 4 — Recommendation Scoring
 
 Formula:
 
@@ -566,7 +513,7 @@ RecommendationScore = Similarity × InteractionStrength
 
 ---
 
-# Example
+### Example
 
 | Item      | Similarity |
 | --------- | ---------- |
@@ -582,14 +529,14 @@ Final Score:
 
 ---
 
-# Meaning
+### Meaning
 
 Because the user strongly likes Naruto,
 related anime recommendations become stronger.
 
 ---
 
-# Step 5 — Exclude Watched Content
+### Step 5 — Exclude Watched Content
 
 ```python
 if item_id in watched_items:
@@ -598,13 +545,13 @@ if item_id in watched_items:
 
 ---
 
-# Why?
+### Why?
 
 Recommending already watched content is bad user experience.
 
 ---
 
-# Step 6 — Score Normalization
+### Step 6 — Score Normalization
 
 ```python
 recommendation_score / max_score
@@ -612,7 +559,7 @@ recommendation_score / max_score
 
 ---
 
-# Why Normalize?
+### Why Normalize?
 
 To make recommendation scores:
 
@@ -631,39 +578,32 @@ To make recommendation scores:
 
 ---
 
-# 4. popular_recommender.py
+#4. popular_recommender.py
 
 ## Purpose
 
-Responsible for:
-
-# global popular recommendations
+Responsible for: global popular recommendations
 
 ---
 
-# Why Popular Recommendation Is Needed
+### Why Popular(Global) Recommendation Is Needed
 
 Collaborative filtering cannot personalize:
 
 * new users
 * users without history
 
-This is called:
-
-# cold-start problem
+This is called cold-start problem
 
 ---
 
 # Popularity Formula
 
-Popularity =
-0.7 × TotalInteractionScore
-+
-0.3 × UniqueUserCount
+```Popularity = 0.7 × TotalInteractionScore + 0.3 × UniqueUserCount```
 
 ---
 
-# Why Combine Two Signals?
+### Why Combine Two Signals?
 
 Because the system should consider:
 
@@ -674,7 +614,7 @@ Because the system should consider:
 
 ---
 
-# Example
+### Example
 
 | Movie        | Interaction | Users |
 | ------------ | ----------- | ----- |
@@ -687,15 +627,13 @@ Naruto becomes more globally popular.
 
 # 5. recommendation_service.py
 
-## Purpose
+### Purpose
 
-Acts as:
-
-# orchestration layer
+Acts as orchestration layer
 
 ---
 
-# Responsibilities
+### Responsibilities
 
 * initialize recommenders
 * centralize business logic
@@ -704,7 +642,7 @@ Acts as:
 
 ---
 
-# Why Service Layer Is Important
+### Why Service Layer Is Important
 
 Keeps:
 
@@ -714,7 +652,7 @@ Keeps:
 
 ---
 
-# Fallback Logic
+### Fallback Logic
 
 ```python
 if (
@@ -725,7 +663,7 @@ if (
 
 ---
 
-# Why?
+### Why?
 
 Some users may:
 
@@ -733,128 +671,6 @@ Some users may:
 * have too few interactions
 * generate no recommendations
 
-The system then falls back to:
-
-# popular recommendations
+The system then falls back to: popular(global) recommendations
 
 ---
-
-# 6. api.py
-
-## Purpose
-
-Expose recommendation system through:
-
-# FastAPI endpoints
-
----
-
-# Why FastAPI?
-
-Because:
-
-* lightweight
-* fast
-* easy API documentation
-* suitable for ML/recommendation services
-
----
-
-# Endpoints
-
-## Health Check
-
-```http
-GET /health
-```
-
-Used for:
-
-* service monitoring
-* deployment health checking
-
----
-
-## Global Recommendation
-
-```http
-GET /popular?k=10
-```
-
-Returns:
-
-* globally popular content
-
----
-
-## Personalized Recommendation
-
-```http
-GET /recommendations?user_id=u10&k=10
-```
-
-Returns:
-
-* personalized recommendations
-* fallback information
-
----
-
-# Example API Response
-
-```json
-{
-  "user_id": "u10",
-  "fallback_used": false,
-  "items": [
-    {
-      "title": "Blue Lock",
-      "recommendation_score": 0.91
-    }
-  ]
-}
-```
-
----
-
-# Final Recommendation Flow
-
-```text
-User Events
-    ↓
-Interaction Engineering
-    ↓
-Behavioral Representation
-    ↓
-Collaborative Filtering
-    ↓
-Recommendation Ranking
-    ↓
-Fallback Handling
-    ↓
-API Response
-```
-
----
-
-# Final Conclusion
-
-This project implements a:
-
-# behavior-driven recommendation system
-
-using:
-
-* implicit feedback modeling
-* collaborative filtering
-* cosine similarity
-* interaction engineering
-* recency weighting
-* popularity fallback
-
-The system generates:
-
-* personalized movie recommendations
-* globally trending recommendations
-
-with a modular and API-ready architecture.
