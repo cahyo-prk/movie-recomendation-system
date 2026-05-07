@@ -9,6 +9,16 @@ This project is a Movie Recommendation System built using:
 * Implicit Feedback Modeling
 * FastAPI
 
+## Result Preview
+
+This project is a Movie Recommendation System built using:
+
+* Collaborative Filtering
+* Popularity-Based Recommendation
+* Implicit Feedback Modeling
+* FastAPI
+
+
 The system provides:
 
 1. Global Popular Recommendations
