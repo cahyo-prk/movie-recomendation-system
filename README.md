@@ -23,12 +23,35 @@ The recommendation system has two main objectives:
 ## Result Preview
 
 This project is a Movie Recommendation System built using:
-
-* Collaborative Filtering
-* Popularity-Based Recommendation
-* Implicit Feedback Modeling
-* FastAPI
-
+{
+  "k": 3,
+  "items": [
+    {
+      "item_id": "i203",
+      "title": "It's Okay to Not Be Okay S2E16",
+      "genre": "drama",
+      "content_type": "series",
+      "popularity_score": 116.2021,
+      "reason": "Trending globally based on user engagement"
+    },
+    {
+      "item_id": "i143",
+      "title": "Reply 1988 S2E6",
+      "genre": "family",
+      "content_type": "series",
+      "popularity_score": 109.1168,
+      "reason": "Trending globally based on user engagement"
+    },
+    {
+      "item_id": "i199",
+      "title": "Warkop DKI Reborn Part 4",
+      "genre": "comedy",
+      "content_type": "movie",
+      "popularity_score": 95.7801,
+      "reason": "Trending globally based on user engagement"
+    }
+  ]
+}
 
 The system provides:
 
