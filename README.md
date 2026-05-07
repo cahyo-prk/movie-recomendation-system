@@ -379,17 +379,75 @@ Recent interactions should influence recommendations more strongly.
 
 | Interaction | Weight |
 | ----------- | ------ |
-| yesterday   | high   |
-| 90 days ago | low    |
+| yesterday   | 1      |
+| 90 days ago | 0.6    |
 
 ---
 
-# Final Interaction Score Example
+## Final Interaction Score Example
 
-| Event | Watch | Recency | Final Score |
-| ----- | ----- | ------- | ----------- |
-| like  | 1000  | recent  | high        |
-| skip  | 50    | old     | low         |
+### Case 1 — Strong Positive Interaction
+
+| Feature       | Value |
+| ------------- | ----- |
+| event_type    | like  |
+| watch_seconds | 1000  |
+| days_ago      | 5     |
+
+**Calculation**
+
+| Component     | Result |
+| ------------- | ------ |
+| EventWeight   | 2.0    |
+| log(1 + 1000) | 6.9    |
+| RecencyWeight | 0.84   |
+
+**Final Score**
+
+```text
+interaction_score =
+2.0 × 6.9 × 0.84
+≈ 11.59
+```
+This interaction produces a high score because:
+* the user explicitly liked the content
+* the user watched for a long duration
+* the interaction happened recently
+
+This content will strongly influence future recommendations.
+
+---
+
+### Case 2 — Weak Interaction
+
+| Feature       | Value |
+| ------------- | ----- |
+| event_type    | skip  |
+| watch_seconds | 30    |
+| days_ago      | 60    |
+
+**Calculation**
+
+| Component     | Result |
+| ------------- | ------ |
+| EventWeight   | 0.2    |
+| log(1 + 30)   | 3.43   |
+| RecencyWeight | 0.13   |
+
+**Final Score**
+
+```text
+interaction_score =
+0.2 × 3.43 × 0.13
+≈ 0.089
+```
+This interaction produces a very low score because:
+
+* the user skipped the content
+* watch duration was short
+* the interaction is old
+
+This content has very little influence on future recommendations.
 
 ---
 
